@@ -21,7 +21,6 @@ class CreateUserappsTable extends Migration
             $table->string('email');
             $table->enum('jk',['laki-laki','perempuan']);
 
-            $table->softDeletes();
             $table->timestamps();
         });
     }

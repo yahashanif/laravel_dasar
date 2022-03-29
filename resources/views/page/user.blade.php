@@ -50,4 +50,19 @@
         </div>
     </div>
 </div>
+{{-- alert dialog --}}
+@if (session('success') == true)
+{
+    <script>
+        Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: '{{session('success')}}',
+        showConfirmButton: false,
+        timer: 1500
+        })
+    </script>
+}
+    
+@endif
 @endsection

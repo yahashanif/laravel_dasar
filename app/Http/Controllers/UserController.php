@@ -24,7 +24,7 @@ class UserController extends Controller
 
     public function editUser($id)
     {
-        $data['user'] = userapp::find($id)->first();
+        $data['user'] = userapp::where('id',$id)->first();
         return view('page.editUser', $data);
     }
 
@@ -91,8 +91,9 @@ class UserController extends Controller
         }
     }
 
-    public function delete($id){
-        $delete = userapp::delete($id);
+    public function deleteUser($id){
+        $delete = userapp::find($id);
+        $delete->delete();
 
         if($delete){
             return redirect('user')->with('success', 'Sukses Delete user');

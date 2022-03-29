@@ -23,4 +23,4 @@ Route::get('input-user',[UserController::class,'tambahUser'])->name('input-user'
 Route::post('save-user',[UserController::class,'save'])->name('save-user');
 Route::get('edit-user/{id}',[UserController::class,'editUser'])->name('edit-user');
 Route::post('update-user/{id}',[UserController::class,'updateUser'])->name('update-user');
-Route::delete('delete-user/{id}',[UserController::class,'deleteUser'])->name('delete-user');
+Route::get('delete-user/{id}',[UserController::class,'deleteUser'])->name('delete-user');
