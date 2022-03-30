@@ -24,6 +24,7 @@
                             <th>No Telp</th>
                             <th>Alamat</th>
                             <th>Email</th>
+                            <th>Gambar</th>
                             <th>Jenis Kelamin</th>
                             <th>Aksi</th>
                         </tr>
@@ -36,6 +37,7 @@
                                     <th>{{$isi->no_telp}}</th>
                                     <th>{{$isi->alamat}}</th>
                                     <th>{{$isi->email}}</th>
+                                    <th><img src="{{asset('gambar/'.$isi->gambar)}}" width="30%" alt=""></th>
                                     <th>{{$isi->jk}}</th>
                                     <th>
                                         <a href="{{route('edit-user',$isi->id)}}" class="btn btn-success"><i class="fa fa-edit"></i></a>

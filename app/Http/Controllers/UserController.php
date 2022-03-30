@@ -24,7 +24,7 @@ class UserController extends Controller
 
     public function editUser($id)
     {
-        $data['user'] = userapp::where('id',$id)->first();
+        $data['user'] = userapp::where('id', $id)->first();
         return view('page.editUser', $data);
     }
 
@@ -38,24 +38,50 @@ class UserController extends Controller
             'jenis_kelamin' => 'required',
         ]);
         if ($validator->fails()) {
-            return redirect('edit-user',$id)
-                ->withErrors($validator)
-                ->withInput();
-        }
-        $simpan = userapp::where('id',$id)->update([
-            'nama' => $request->nama,
-            'alamat' => $request->alamat,
-            'jk' => $request->jenis_kelamin,
-            'no_telp' => $request->nomor_telepon,
-            'email' => $request->email,
+                return redirect('edit-user', $id)
+                    ->withErrors($validator)
+                    ->withInput();
+            }
+            // dd($id);
 
-        ]);
+
+        if ($request->file('gambar') == NULL) {
+
+            $simpan = userapp::where('id', $id)->update([
+                'nama' => $request->nama,
+                'alamat' => $request->alamat,
+                'jk' => $request->jenis_kelamin,
+                'no_telp' => $request->nomor_telepon,
+                'email' => $request->email,
+
+
+            ]);
+        } else {
+            $fotolama = userapp::find($id)->first();
+            if($fotolama->gambar != NULL) {
+                unlink('gambar/'.$fotolama->gambar);
+            }
+            $file = $request->file('gambar');
+            $fileName = $file->getClientOriginalName();
+            $extension = $file->getClientOriginalExtension();
+            $file->move('gambar/', $fileName);
+            $simpan = userapp::where('id', $id)->update([
+                'nama' => $request->nama,
+                'alamat' => $request->alamat,
+                'jk' => $request->jenis_kelamin,
+                'no_telp' => $request->nomor_telepon,
+                'email' => $request->email,
+                'gambar' => $fileName
+
+
+            ]);
+        }
 
 
         if ($simpan == true) {
             return redirect('user')->with('success', 'Data berhasil diupdate');
         } else {
-            return redirect('edit-user',$id)->with('error', 'Data Gagal diupdate');
+            return redirect('edit-user', $id)->with('error', 'Data Gagal diupdate');
         }
     }
 
@@ -67,6 +93,7 @@ class UserController extends Controller
             'email' => 'required',
             'alamat' => 'required',
             'jenis_kelamin' => 'required',
+            'gambar' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -74,6 +101,10 @@ class UserController extends Controller
                 ->withErrors($validator)
                 ->withInput();
         }
+        $file = $request->file('gambar');
+        $fileName = $file->getClientOriginalName();
+        $extension = $file->getClientOriginalExtension();
+        $file->move('gambar/', $fileName);
 
         $simpan = userapp::insert([
             'nama' => $request->nama,
@@ -81,25 +112,27 @@ class UserController extends Controller
             'jk' => $request->jenis_kelamin,
             'no_telp' => $request->nomor_telepon,
             'email' => $request->email,
+            'gambar' => $fileName
 
         ]);
 
-        if ($simpan ==true) {
+
+        if ($simpan == true) {
             return redirect('user')->with('success', 'Data berhasil disimpan');
         } else {
             return redirect('input-user')->with('error', 'Data Gagal Disimpan');
         }
     }
 
-    public function deleteUser($id){
+    public function deleteUser($id)
+    {
         $delete = userapp::find($id);
         $delete->delete();
 
-        if($delete){
+        if ($delete) {
             return redirect('user')->with('success', 'Sukses Delete user');
-        }else{
+        } else {
             return redirect('user')->with('error', 'Gagal Delete user');
         }
-        
     }
 }

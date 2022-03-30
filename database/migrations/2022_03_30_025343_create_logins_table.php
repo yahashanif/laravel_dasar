@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUserappsTable extends Migration
+class CreateLoginsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,12 @@ class CreateUserappsTable extends Migration
      */
     public function up()
     {
-        Schema::create('userapps', function (Blueprint $table) {
+        Schema::create('logins', function (Blueprint $table) {
             $table->id();
             $table->string('nama');
-            $table->string('no_telp');
-            $table->string('alamat');
-            $table->string('email');
-            $table->enum('jk',['laki-laki','perempuan']);
-            $table->string('gambar')->nullable();
-
+            $table->string('username');
+            $table->string('password');
+            $table->rememberToken();
             $table->timestamps();
         });
     }
@@ -33,6 +30,6 @@ class CreateUserappsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('userapps');
+        Schema::dropIfExists('logins');
     }
 }
